@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    private void changeToMainView() {
+    void changeToMainView() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment, new MainFragment());
         ft.commit();

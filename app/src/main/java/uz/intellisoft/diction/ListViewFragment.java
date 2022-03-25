@@ -1,15 +1,24 @@
 package uz.intellisoft.diction;
 
-import android.app.ActionBar;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
 
 public class ListViewFragment extends Fragment {
     private androidx.appcompat.app.ActionBar actionBar;
@@ -60,9 +69,9 @@ public class ListViewFragment extends Fragment {
         actionBar.setCustomView(R.layout.custom_action_bar);
 
         if (nameOfDB.equals("History.db")) {
-            actionBar.setTitle(R.string.text_history);
+            actionBar.setTitle(R.string.ic_history);
         } else {
-            actionBar.setTitle(R.string.text_favourites);
+            actionBar.setTitle(R.string.ic_liked);
         }
     }
 
@@ -79,10 +88,10 @@ public class ListViewFragment extends Fragment {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
             if (nameOfDB.equals("History.db")) {
                 noWordsText.setText(R.string.no_words_in_history);
-                actionBar.setTitle(R.string.text_history);
+                actionBar.setTitle(R.string.ic_history);
             } else {
                 noWordsText.setText(R.string.no_words_in_favourites);
-                actionBar.setTitle(R.string.text_favourites);
+                actionBar.setTitle(R.string.ic_liked);
             }
         } else {
             setCustomActionBar();
