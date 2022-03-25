@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
@@ -43,8 +44,6 @@ public class MainFragment extends Fragment {
     private boolean isFavourite; // if current word is favourite.
     private boolean noTranslate; // do not translate at 1-st text changing. Need when initialize
     // with some text.
-    private TextView apiInfo;
-    private TextView link;
 
     /**
      * Initialize widget elements and create view
@@ -68,8 +67,6 @@ public class MainFragment extends Fragment {
         translatedText = (TextView) rootView.findViewById(R.id.translatedText);
         translatedText.setMovementMethod(new ScrollingMovementMethod());
         translatedText.setVerticalScrollBarEnabled(true);
-        link = (TextView) rootView.findViewById(R.id.link);
-        apiInfo = (TextView) rootView.findViewById(R.id.api_info);
         setArgs();
         return rootView;
     }
@@ -80,7 +77,7 @@ public class MainFragment extends Fragment {
      * @param savedInstanceState
      */
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         setSpinners();
         textChangedListener();
         addButtonListener();
@@ -89,7 +86,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("selection1", spinner1.getSelectedItemPosition());
         editor.putInt("selection2", spinner2.getSelectedItemPosition());
@@ -115,8 +112,6 @@ public class MainFragment extends Fragment {
         String text = String.valueOf(textToTranslate.getText());
         if(!text.equals("")){
             addToFavourites.setVisibility(View.VISIBLE);
-            apiInfo.setVisibility(View.VISIBLE);
-            link.setVisibility(View.VISIBLE);
 
             DataBaseHelper dataBaseHelper = new DataBaseHelper(rootView.getContext(), "Favourites.db");
             if(dataBaseHelper.isInDataBase(new Word(text, translatedText.getText().toString(),
@@ -131,14 +126,12 @@ public class MainFragment extends Fragment {
         } else{
             isFavourite = false;
             addToFavourites.setVisibility(View.INVISIBLE);
-            apiInfo.setVisibility(View.INVISIBLE);
-            link.setVisibility(View.INVISIBLE);
             translatedText.setText("");
         }
     }
 
     public void setArgs() {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
         String text = sharedPref.getString("textToTranslate", "");
         String translation = sharedPref.getString("translatedText", "");
         int selection1 = sharedPref.getInt("selection1", 0);
@@ -151,8 +144,6 @@ public class MainFragment extends Fragment {
             spinner2.setSelection(selection2);
             translatedText.setText(translation);
             addToFavourites.setVisibility(View.VISIBLE);
-            apiInfo.setVisibility(View.VISIBLE);
-            link.setVisibility(View.VISIBLE);
             if(isFavourite){
                 addToFavourites.setImageResource(R.drawable.ic_baseline_favorite_selected_24);
             } else{
@@ -163,40 +154,35 @@ public class MainFragment extends Fragment {
 
     public void addButtonListener() {
 
-        addToFavourites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(v.getContext(),
-                        "Favourites.db");
-                String text = textToTranslate.getText().toString().trim();
-                String translation = translatedText.getText().toString();
-                int source = spinner1.getSelectedItemPosition();
-                int target = spinner2.getSelectedItemPosition();
-                Word item = new Word(text, translation, source, target);
-                if(dataBaseHelper.isInDataBase(item)){
-                    dataBaseHelper.deleteWord(item);
-                    addToFavourites.setImageResource(R.drawable.ic_baseline_favorite_24);
-                    isFavourite = false;
-                } else{
-                    isFavourite = true;
-                    dataBaseHelper.insertWord(item);
-                    addToFavourites.setImageResource(R.drawable.ic_baseline_favorite_selected_24);
-                }
-                dataBaseHelper.close();
+        addToFavourites.setOnClickListener(v -> {
+            DataBaseHelper dataBaseHelper = new DataBaseHelper(v.getContext(),
+                    "Favourites.db");
+            String text = textToTranslate.getText().toString().trim();
+            String translation = translatedText.getText().toString();
+            int source;
+            source = spinner1.getSelectedItemPosition();
+            int target = spinner2.getSelectedItemPosition();
+            Word item = new Word(text, translation, source, target);
+            if(dataBaseHelper.isInDataBase(item)){
+                dataBaseHelper.deleteWord(item);
+                addToFavourites.setImageResource(R.drawable.ic_baseline_favorite_24);
+                isFavourite = false;
+            } else{
+                isFavourite = true;
+                dataBaseHelper.insertWord(item);
+                addToFavourites.setImageResource(R.drawable.ic_baseline_favorite_selected_24);
             }
+            dataBaseHelper.close();
         });
 
-        changeLanguages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int sourceLng = spinner1.getSelectedItemPosition();
-                int targetLng = spinner2.getSelectedItemPosition();
+        changeLanguages.setOnClickListener(v -> {
+            int sourceLng = spinner1.getSelectedItemPosition();
+            int targetLng = spinner2.getSelectedItemPosition();
 
-                spinner1.setSelection(targetLng);
-                spinner2.setSelection(sourceLng);
+            spinner1.setSelection(targetLng);
+            spinner2.setSelection(sourceLng);
 
-                translate(textToTranslate.getText().toString().trim());
-            }
+            translate(textToTranslate.getText().toString().trim());
         });
 
     }
@@ -239,17 +225,7 @@ public class MainFragment extends Fragment {
 
         RxTextView.textChanges(textToTranslate).
                 filter(charSequence -> charSequence.length() == 0).
-                subscribe(new Action1<CharSequence>() {
-                    @Override
-                    public void call(CharSequence charSequence) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                checkIfInFavourites();
-                            }
-                        });
-                    }
-                });
+                subscribe(charSequence -> requireActivity().runOnUiThread(this::checkIfInFavourites));
     }
 
     private void translate(String text){
@@ -270,21 +246,19 @@ public class MainFragment extends Fragment {
 
         call.enqueue(new Callback<TranslatedText>() {
             @Override
-            public void onResponse(Call<TranslatedText> call, Response<TranslatedText> response) {
+            public void onResponse(@NonNull Call<TranslatedText> call, @NonNull Response<TranslatedText> response) {
                 if(response.isSuccessful()){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            translatedText.setText(response.body().getText().get(0));
-                            checkIfInFavourites();
-                            addToHistory();
-                        }
+                    requireActivity().runOnUiThread(() -> {
+                        assert response.body() != null;
+                        translatedText.setText(response.body().getText().get(0));
+                        checkIfInFavourites();
+                        addToHistory();
                     });
                 }
             }
 
             @Override
-            public void onFailure(Call<TranslatedText> call, Throwable t) {}
+            public void onFailure(@NonNull Call<TranslatedText> call, Throwable t) {}
         });
     }
 

@@ -104,26 +104,24 @@ public class CustomAdapter extends ArrayAdapter<Word> {
         dbhelper.close();
 
         button.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
+                v1 -> {
 
-                        String text = item.getWord();
-                        String translation = item.getTranslation();
-                        int[] languages = {item.getSourcePosition(), item.getTargetPosition()};
-                        ImageButton button = (ImageButton) v.findViewById(R.id.addToFavourites2);
-                        Word word = new Word(text, translation, languages[0], languages[1]);
+                    String text1 = item.getWord();
+                    String translation1 = item.getTranslation();
+                    int[] languages = {item.getSourcePosition(), item.getTargetPosition()};
+                    ImageButton button1 = (ImageButton) v1.findViewById(R.id.addToFavourites2);
+                    Word word = new Word(text1, translation1, languages[0], languages[1]);
 
-                        DataBaseHelper dbhelper = new DataBaseHelper(getContext(), "Favourites.db");
-                        if (dbhelper.isInDataBase(word)) {
-                            dbhelper.setDeleted(word);
-                            button.setImageResource(R.drawable.ic_baseline_favorite_24);
-                        } else {
-                            dbhelper.insertWord(word);
-                            button.setImageResource(R.drawable.ic_baseline_favorite_selected_24);
-                        }
-                        dbhelper.close();
-
+                    DataBaseHelper dbhelper1 = new DataBaseHelper(getContext(), "Favourites.db");
+                    if (dbhelper1.isInDataBase(word)) {
+                        dbhelper1.setDeleted(word);
+                        button1.setImageResource(R.drawable.ic_baseline_favorite_24);
+                    } else {
+                        dbhelper1.insertWord(word);
+                        button1.setImageResource(R.drawable.ic_baseline_favorite_selected_24);
                     }
+                    dbhelper1.close();
+
                 });
 
         return v;
