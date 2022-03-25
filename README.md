@@ -1,0 +1,2 @@
+# Diction
+Diction - easy translation!
