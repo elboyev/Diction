@@ -6,7 +6,7 @@ import retrofit2.http.Query;
 
 public interface APIHelper {
     @POST("api/v1.5/tr.json/translate")
-    abstract Call<TranslatedText> getTranslation(@Query("key") String APIKey,
-                                                 @Query("text") String textToTranslate,
-                                                 @Query("lang") String lang);
+    Call<TranslatedText> getTranslation(@Query("key") String APIKey,
+                                        @Query("text") String textToTranslate,
+                                        @Query("lang") String lang);
 }

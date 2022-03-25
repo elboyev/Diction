@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeToListView(String DBname) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ListViewFragment listViewFragment = new ListViewFragment().newInstance(DBname);
+        ListViewFragment listViewFragment = ListViewFragment.newInstance(DBname);
         ft.replace(R.id.fragment, listViewFragment);
         ft.commit();
     }
