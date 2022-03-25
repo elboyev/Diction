@@ -99,7 +99,7 @@ public class CustomAdapter extends ArrayAdapter<Word> {
 
         DataBaseHelper dbhelper = new DataBaseHelper(v.getContext(), "Favourites.db");
         if (dbhelper.isInDataBase(item)) {
-            button.setImageResource(R.drawable.selected_favourites_icon);
+            button.setImageResource(R.drawable.ic_baseline_favorite_selected_24);
         }
         dbhelper.close();
 
@@ -116,10 +116,10 @@ public class CustomAdapter extends ArrayAdapter<Word> {
                         DataBaseHelper dbhelper = new DataBaseHelper(getContext(), "Favourites.db");
                         if (dbhelper.isInDataBase(word)) {
                             dbhelper.setDeleted(word);
-                            button.setImageResource(R.drawable.default_favourites_icon);
+                            button.setImageResource(R.drawable.ic_baseline_favorite_24);
                         } else {
                             dbhelper.insertWord(word);
-                            button.setImageResource(R.drawable.selected_favourites_icon);
+                            button.setImageResource(R.drawable.ic_baseline_favorite_selected_24);
                         }
                         dbhelper.close();
 
