@@ -1,7 +1,5 @@
 package uz.intellisoft.diction;
 
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.language.bm.Languages;
-
 import java.util.Locale;
 
 public class Word {
