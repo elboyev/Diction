@@ -1,16 +1,14 @@
 package uz.intellisoft.diction;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.view.MenuItem;
-import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,27 +28,25 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationListner();
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void bottomNavigationListner() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_translate:
-                                changeToMainView();
-                                break;
-                            case R.id.action_favourites:
-                                changeToListView("Favourites.db");
-                                break;
-                            case R.id.action_history:
-                                changeToListView("History.db");
-                                break;
-                        }
-                        return true;
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_translate:
+                            changeToMainView();
+                            break;
+                        case R.id.action_favourites:
+                            changeToListView("Favourites.db");
+                            break;
+                        case R.id.action_history:
+                            changeToListView("History.db");
+                            break;
                     }
+                    return true;
                 });
     }
 

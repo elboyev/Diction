@@ -3,4 +3,16 @@
     <string name="ic_translate">Translate</string>
     <string name="ic_liked">Liked</string>
     <string name="ic_history">History</string>
+    <string name="source_language">Uzbek</string>
+    <string name="target_language">English</string>
+    <string name="not_found">Error</string>
+    <string name="delete_confirmation_of_favourite_words">confirm deleted</string>
+    <string name="delete_confirmation_of_history_words">confirm history</string>
+    <string name="history_search_hint">search history</string>
+    <string name="favourite_search_hint">search liked</string>
+    <string name="no_words_in_favourites">not found translated text from liked</string>
+    <string name="no_words_in_history">not found translated text from history</string>
+    <string name="write_word">write word</string>
+    <string name="api_info">yandex api</string>
+    <string name="link">http://translate.yandex.ru/</string>
 </resources>
