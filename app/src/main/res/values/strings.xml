@@ -14,4 +14,6 @@
     <string name="no_words_in_history">not found translated text from history</string>
     <string name="write_word">write word</string>
     <string name="api_info">yandex api</string>
+    <string name="link">http://translate.yandex.ru/</string>
+    <string name="API_KEY">trnsl.1.1.20170425T085917Z.580fec9ed721d387.9caf5bd2514ca1581b95de321974dce826ef5064</string>
 </resources>

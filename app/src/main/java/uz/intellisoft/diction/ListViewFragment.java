@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ListViewFragment extends Fragment {
     private androidx.appcompat.app.ActionBar actionBar;
@@ -39,8 +40,9 @@ public class ListViewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        assert getArguments() != null;
         nameOfDB = getArguments().getString("nameOfDB");
-        actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
     }
 
     @Nullable
@@ -78,7 +80,7 @@ public class ListViewFragment extends Fragment {
     public void changeToListView() {
         final DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext(), nameOfDB);
         ArrayList<Word> arrayList = dataBaseHelper.getAllWords();
-        adapter = new CustomAdapter(getContext(), R.layout.list_item, arrayList);
+        adapter = new CustomAdapter(requireContext(), R.layout.list_item, arrayList);
 
         if (arrayList.isEmpty()) {
             TextView noWordsText = (TextView) rootView.findViewById(R.id.no_words_in_listview);
@@ -115,7 +117,7 @@ public class ListViewFragment extends Fragment {
                     dbhelper.close();
 
                     dbhelper = new DataBaseHelper(view.getContext(), "Favourites.db");
-                    SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putInt("selection1", languages[0]);
                     editor.putInt("selection2", languages[1]);
@@ -130,7 +132,7 @@ public class ListViewFragment extends Fragment {
                     editor.apply();
                     dbhelper.close();
 
-                    ((MainActivity) getActivity()).changeToMainView();
+                    ((MainActivity) requireActivity()).changeToMainView();
                 }
             });
 
