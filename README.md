@@ -27,7 +27,7 @@ Diction bu onlayn va offlayn rejimda ishlovchi android os uchun yozilgan ilova b
 ## Hissa qo'shuvchilar:
 
 - [Bahhtee](https://github.com/elboyev)
-- balki Siz bo'lishingiz mumkun? :)
+- balki Siz?:)
 
 1. Repo ni fork qiling.
 2. Barcha o'zgarishlaringizni saqlang.
